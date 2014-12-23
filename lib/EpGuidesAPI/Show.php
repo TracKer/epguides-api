@@ -28,7 +28,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if ((!isset($matches[1])) || (!isset($matches[2]))) {
-      // TODO: Throw exception here.
+      throw new Exception('Unable to parse title and IMDB ID.');
     }
     $this->imdb_id = trim($matches[1]);
     $this->title = trim($matches[2]);
@@ -41,7 +41,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if ((!isset($matches[1])) || (!isset($matches[2]))) {
-      // TODO: Throw exception here.
+      throw new Exception('Unable to parse EPGuides ID and CSV link.');
     }
     $csv_link = $matches[1];
     $this->epguides_id = $matches[2];
@@ -57,7 +57,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if (!isset($matches[1])) {
-      // TODO: Throw exception here.
+      throw new Exception('Unable to parse CSV.');
     }
     $tmp_csv = trim($matches[1]);
     unset($result);
@@ -103,8 +103,7 @@ class Show {
     curl_setopt_array($ch, $options);
     $result = curl_exec($ch);
     if(!$result) {
-      // TODO: Throw exception here.
-      trigger_error(curl_error($ch));
+      throw new Exception('CURL Error: ' . curl_error($ch));
     }
     curl_close($ch);
     return $result;
