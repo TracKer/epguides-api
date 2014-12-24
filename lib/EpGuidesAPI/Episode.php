@@ -72,4 +72,8 @@ class Episode {
 
     return false;
   }
+
+  public function getRawData() {
+    return $this->episode_data;
+  }
 }
