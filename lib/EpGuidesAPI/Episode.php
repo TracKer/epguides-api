@@ -14,10 +14,10 @@ class Episode {
   private $episode;
   private $number;
   private $release_date;
-  private $episode_data;
+  private $raw_data;
 
   public function __construct($show, $episode_data) {
-    $this->episode_data = $episode_data;
+    $this->raw_data = $episode_data;
     $this->show = $show;
 
     $this->title = $episode_data['title'];
@@ -86,6 +86,6 @@ class Episode {
   }
 
   public function getRawData() {
-    return $this->episode_data;
+    return $this->raw_data;
   }
 }
