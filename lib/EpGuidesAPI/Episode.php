@@ -40,6 +40,10 @@ class Episode {
     unset($timezone);
   }
 
+  public function getShow() {
+    return $this->show;
+  }
+
   public function getTitle() {
     return $this->title;
   }
