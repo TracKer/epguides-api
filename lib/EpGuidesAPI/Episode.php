@@ -40,6 +40,14 @@ class Episode {
     unset($timezone);
   }
 
+  public function getTitle() {
+    return $this->title;
+  }
+
+  public function isSpecial() {
+    return $this->is_special;
+  }
+
   public function getSeason() {
     return $this->season;
   }
@@ -56,6 +64,10 @@ class Episode {
       return false;
     }
     return $this->number;
+  }
+
+  public function getReleaseDate() {
+    return $this->release_date;
   }
 
   public function getNextEpisode() {
