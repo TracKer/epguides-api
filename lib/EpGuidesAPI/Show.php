@@ -17,7 +17,7 @@ class Show {
 
   private function parseData() {
     // Download show information page.
-    $result = $this->downloadURL('http://epguides.com/BattlestarGalactica/');
+    $result = $this->downloadURL("http://epguides.com/$this->epguides_name/");
     $this->data['page'] = $result;
     unset($result);
 
