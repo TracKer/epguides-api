@@ -8,25 +8,36 @@ class Episode {
    * @var Show
    */
   private $show;
+  private $title;
+  private $is_special;
   private $season;
   private $episode;
   private $number;
-  private $title;
   private $release_date;
+  private $episode_data;
 
   public function __construct($show, $episode_data) {
+    $this->episode_data = $episode_data;
     $this->show = $show;
-    if ($episode_data['special'] == 'y') {
-      $this->season = 'special';
+
+    $this->title = $episode_data['title'];
+    $this->is_special = (strtolower($episode_data['special']) == 'y') ? true : false;
+    if ($this->is_special) {
+      $this->season = null;
       $this->episode = null;
       $this->number = null;
     } else {
-      $this->season = intval($episode_data['season']);
-      $this->episode = intval($episode_data['episode']);
-      $this->number = intval($episode_data['number']);
+      $this->season = (is_numeric($episode_data['season'])) ? intval($episode_data['season']) : null;
+      $this->episode = (is_numeric($episode_data['episode'])) ? intval($episode_data['episode']) : null;
+      $this->number = (is_numeric($episode_data['number'])) ? intval($episode_data['number']) : null;
     }
-    $this->title = $episode_data['title'];
-    $this->release_date = $episode_data['airdate'];
+
+    // CST timezone.
+    $timezone = new \DateTimeZone('Canada/Saskatchewan');
+    $date = \DateTime::createFromFormat('d/M/y H:i:s', $episode_data['airdate'] . ' 12:00:00', $timezone);
+    $this->release_date = $date->getTimestamp();
+    unset($date);
+    unset($timezone);
   }
 
   public function getSeason() {
@@ -34,21 +45,21 @@ class Episode {
   }
 
   public function getEpisode() {
-    if ($this->season == 'special') {
+    if ($this->is_special) {
       return false;
     }
     return $this->episode;
   }
 
   public function getNumber() {
-    if ($this->season == 'special') {
+    if ($this->is_special) {
       return false;
     }
     return $this->number;
   }
 
   public function getNextEpisode() {
-    if ($this->season == 'special') {
+    if ($this->is_special) {
       return false;
     }
 
