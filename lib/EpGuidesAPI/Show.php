@@ -7,7 +7,7 @@ class Show {
   private $epguides_id;
   private $title;
   private $imdb_id;
-  private $data = array('page' => null, 'csv' => null);
+  private $raw_data = array('page' => null, 'csv' => null);
   private $episodes = array();
 
   public function __construct($epguides_name) {
@@ -18,11 +18,11 @@ class Show {
   private function parseData() {
     // Download show information page.
     $result = $this->downloadURL("http://epguides.com/$this->epguides_name/");
-    $this->data['page'] = $result;
+    $this->raw_data['page'] = $result;
     unset($result);
 
     // Parse Title and IMDB ID.
-    $subject = $this->data['page'];
+    $subject = $this->raw_data['page'];
     $pattern = '/<h1><a href="[\w:\/\/.]*title\/([\w.]*)">([\w\s.&:\']*)[\w)(]*<\/a>/';
     preg_match($pattern, $subject, $matches);
     unset($subject);
@@ -35,7 +35,7 @@ class Show {
     unset($matches);
 
     // Parse EPGuides ID and CSV link.
-    $subject = $this->data['page'];
+    $subject = $this->raw_data['page'];
     $pattern = '/<a href="(http:\/\/epguides\.com\/common\/exportToCSV\.asp\?rage=([\w]+))"/';
     preg_match($pattern, $subject, $matches);
     unset($subject);
@@ -65,7 +65,7 @@ class Show {
 
     // Parse CSV data.
     $tmp_csv = $this->parseCSV($tmp_csv);
-    $this->data['csv'] = $tmp_csv;
+    $this->raw_data['csv'] = $tmp_csv;
     unset($tmp_csv);
   }
 
@@ -109,8 +109,20 @@ class Show {
     return $result;
   }
 
+  public function getEpGuidesName() {
+    return $this->epguides_name;
+  }
+
+  public function getEpGuidesID() {
+    return $this->epguides_id;
+  }
+
   public function getTitle() {
     return $this->title;
+  }
+
+  public function getRawData() {
+    return $this->raw_data;
   }
 
   public function getIMDB() {
@@ -123,7 +135,7 @@ class Show {
     }
 
     $episodes = array();
-    foreach ($this->data['csv'] as $episode_data) {
+    foreach ($this->raw_data['csv'] as $episode_data) {
       $episode = new Episode($this, $episode_data);
       $episodes[] = $episode;
     }
