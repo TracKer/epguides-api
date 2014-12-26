@@ -3,12 +3,12 @@
 namespace EpGuidesAPI;
 
 class Show {
-  private $epguides_name = null;
-  private $epguides_id = null;
-  private $title = null;
-  private $imdb_id = null;
+  private $epguides_name;
+  private $epguides_id;
+  private $title;
+  private $imdb_id;
   private $data = array('page' => null, 'csv' => null);
-  private $episodes = null;
+  private $episodes = array();
 
   public function __construct($epguides_name) {
     $this->epguides_name = $epguides_name;
@@ -118,7 +118,7 @@ class Show {
   }
 
   public function getEpisodes() {
-    if ($this->episodes !== null) {
+    if (!empty($this->episodes)) {
       return $this->episodes;
     }
 
