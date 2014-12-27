@@ -140,7 +140,32 @@ class Show {
       $episodes[] = $episode;
     }
 
+    // Sort episodes by release date.
+    uasort($episodes, array($this, 'sorterCallback'));
+    $episodes = array_values($episodes);
+
     $this->episodes = $episodes;
     return $episodes;
+  }
+
+  private function sorterCallback(Episode $ep1, Episode $ep2) {
+    if ($ep1->getReleaseDate() == $ep2->getReleaseDate()) {
+      if ($ep1->isSpecial() || $ep2->isSpecial()) {
+        // If one of episodes is special - do nothing.
+        return 0;
+      }
+      // If time is equal, then compare seasons.
+      if ($ep1->getSeason() == $ep2->getSeason()) {
+        // If seasons are equal, then compare episodes.
+        if ($ep1->getEpisode() == $ep2->getEpisode()) {
+          // If episodes are equal - do nothing, since "number" is not based on
+          // time, so it's not representative.
+          return 0;
+        }
+        return ($ep1->getEpisode() < $ep2->getEpisode()) ? -1 : 1;
+      }
+      return ($ep1->getSeason() < $ep2->getSeason()) ? -1 : 1;
+    }
+    return ($ep1->getReleaseDate() < $ep2->getReleaseDate()) ? -1 : 1;
   }
 }

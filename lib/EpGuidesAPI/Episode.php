@@ -75,15 +75,24 @@ class Episode {
   }
 
   public function getNextEpisode() {
-    if ($this->is_special) {
-      return false;
-    }
-
     $episodes = $this->show->getEpisodes();
+    $next_episode = null;
+    $found = false;
     foreach ($episodes as $episode) {
-      if ($episode->getNumber() === ($this->number + 1)) {
-        return $episode;
+      if ($found) {
+        $next_episode = $episode;
+        break;
       }
+      if ($episode === $this) {
+        $found = true;
+        continue;
+      }
+    }
+    unset($found);
+    unset($episodes);
+
+    if ($next_episode !== null) {
+      return $next_episode;
     }
 
     return false;
