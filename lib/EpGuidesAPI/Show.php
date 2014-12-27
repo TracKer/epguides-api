@@ -129,6 +129,12 @@ class Show {
     return $this->imdb_id;
   }
 
+  /**
+   * Get array of episodes sorted by release date.
+   *
+   * @return Episode[]
+   *   Array of Episodes.
+   */
   public function getEpisodes() {
     if (!empty($this->episodes)) {
       return $this->episodes;
