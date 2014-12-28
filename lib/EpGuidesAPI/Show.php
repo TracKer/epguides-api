@@ -18,15 +18,21 @@ class Show {
    *
    * @param string $epguides_name
    *   Machine name of tv show can be taken from url on epguides.com.
-   * @param bool $remove_specials
-   *   Flag which removes Specials from episodes list.
-   * @param bool $remove_other
-   *   Flag which removes other stuff from episodes list.
+   * @param array $options
+   *   Additional options, like:
+   *   - 'remove_specials': Flag which removes Specials from episodes list, default is true.
+   *   - 'remove_other': Flag which removes other stuff from episodes list, default is true.
    */
-  public function __construct($epguides_name, $remove_specials = true, $remove_other = true) {
+  public function __construct($epguides_name, $options) {
+    // Merge in defaults.
+    $options += array(
+      'remove_specials' => true,
+      'remove_other' => true,
+    );
+
     $this->epguides_name = $epguides_name;
-    $this->remove_specials = $remove_specials;
-    $this->remove_other = $remove_other;
+    $this->remove_specials = $options['remove_specials'];
+    $this->remove_other = $options['remove_other'];
     $this->parseData();
   }
 
