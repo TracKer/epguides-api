@@ -9,9 +9,20 @@ class Show {
   private $imdb_id;
   private $raw_data = array('page' => null, 'csv' => null);
   private $episodes = array();
+  private $remove_specials;
+  private $remove_other;
 
-  public function __construct($epguides_name) {
+  /**
+   * Constructor
+   *
+   * @param string $epguides_name
+   *   Machine name of tv show can be taken from url on epguides.com.
+   * @param bool $remove_specials
+   *   Flag which removes Specials from episodes list.
+   */
+  public function __construct($epguides_name, $remove_specials = true) {
     $this->epguides_name = $epguides_name;
+    $this->remove_specials = $remove_specials;
     $this->parseData();
   }
 
@@ -143,6 +154,10 @@ class Show {
     $episodes = array();
     foreach ($this->raw_data['csv'] as $episode_data) {
       $episode = new Episode($this, $episode_data);
+      if ($this->remove_specials && $episode->isSpecial()) {
+        unset($episode);
+        continue;
+      }
       $episodes[] = $episode;
     }
 
