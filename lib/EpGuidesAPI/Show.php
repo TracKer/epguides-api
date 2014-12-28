@@ -43,7 +43,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if ((!isset($matches[1])) || (!isset($matches[2]))) {
-      throw new Exception('Unable to parse title and IMDB ID.');
+      throw new \Exception('Unable to parse title and IMDB ID.');
     }
     $this->imdb_id = trim($matches[1]);
     $this->title = trim($matches[2]);
@@ -56,7 +56,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if ((!isset($matches[1])) || (!isset($matches[2]))) {
-      throw new Exception('Unable to parse EPGuides ID and CSV link.');
+      throw new \Exception('Unable to parse EPGuides ID and CSV link.');
     }
     $csv_link = $matches[1];
     $this->epguides_id = $matches[2];
@@ -72,7 +72,7 @@ class Show {
     unset($subject);
     unset($pattern);
     if (!isset($matches[1])) {
-      throw new Exception('Unable to parse CSV.');
+      throw new \Exception('Unable to parse CSV.');
     }
     $tmp_csv = trim($matches[1]);
     unset($result);
@@ -94,7 +94,7 @@ class Show {
       unset($subject);
       unset($pattern);
       if (empty($matches[1])) {
-        throw new Exception('Unable to parse printable version from tvrage.com.');
+        throw new \Exception('Unable to parse printable version from tvrage.com.');
       }
       $this->printable_episodes = array();
       foreach ($matches[1] as $key => $tmp_item) {
@@ -134,7 +134,7 @@ class Show {
     $options = array(
       CURLOPT_URL => $url,
       CURLOPT_HEADER => 0,
-      CURLOPT_RETURNTRANSFER => TRUE,
+      CURLOPT_RETURNTRANSFER => true,
       CURLOPT_TIMEOUT => 4,
       CURLOPT_FOLLOWLOCATION => true,
     );
@@ -143,7 +143,7 @@ class Show {
     curl_setopt_array($ch, $options);
     $result = curl_exec($ch);
     if(!$result) {
-      throw new Exception('CURL Error: ' . curl_error($ch));
+      throw new \Exception('CURL Error: ' . curl_error($ch));
     }
     curl_close($ch);
     return $result;
